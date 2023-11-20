@@ -15,6 +15,7 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>CEL</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/telus-oss/cel-net</PackageProjectUrl>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
     <ItemGroup>
