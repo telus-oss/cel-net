@@ -16,6 +16,7 @@
         <PackageTags>CEL</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageProjectUrl>https://github.com/telus-oss/cel-net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/telus-oss/cel-net</RepositoryUrl>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
     <ItemGroup>
