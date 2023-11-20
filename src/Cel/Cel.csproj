@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\..\msbuild\package.props" />
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>11.0</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Version>0.1.3</Version>
+        <PackageId>Cel</PackageId>
+        <Authors>TELUS</Authors>
+        <Copyright>Copyright 2023 TELUS</Copyright>
+        <Description>C# implementation of Google Common Expression Language (https://github.com/google/cel-spec)</Description>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageTags>CEL</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+        <PackageReference Include="Antlr4BuildTasks" Version="12.4.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.25.1" />
+        <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Remove="Antlr\Cel.g4" />
+        <Antlr4 Include="Antlr\Cel.g4">
+          <Package>Cel.Internal</Package>
+        </Antlr4>
+    </ItemGroup>
+</Project>

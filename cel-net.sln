@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cel", "src\Cel\Cel.csproj", "{98C60901-C68E-41EE-992D-57C4CE9D8676}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D22B01DC-5D6F-42EA-B192-0218017EA054}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{33306E7E-E251-4676-8BEB-4726A3BE420E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cel.Tests", "tests\Cel.Tests\Cel.Tests.csproj", "{373BEB06-C794-4815-A2F1-E357F335326C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98C60901-C68E-41EE-992D-57C4CE9D8676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C60901-C68E-41EE-992D-57C4CE9D8676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C60901-C68E-41EE-992D-57C4CE9D8676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C60901-C68E-41EE-992D-57C4CE9D8676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{373BEB06-C794-4815-A2F1-E357F335326C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{373BEB06-C794-4815-A2F1-E357F335326C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{373BEB06-C794-4815-A2F1-E357F335326C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{373BEB06-C794-4815-A2F1-E357F335326C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{98C60901-C68E-41EE-992D-57C4CE9D8676} = {D22B01DC-5D6F-42EA-B192-0218017EA054}
+		{373BEB06-C794-4815-A2F1-E357F335326C} = {33306E7E-E251-4676-8BEB-4726A3BE420E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {00F6BF2D-3106-4996-8752-099B2AFC03DF}
+	EndGlobalSection
+EndGlobal

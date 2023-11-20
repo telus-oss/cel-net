@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://artifactory.teluspharmacy.ca/artifactory/gradle-plugins"
+        }
+    }
+    dependencies {
+        classpath "com.ullink.gradle:gradle-msbuild-plugin:3.15"
+        classpath "com.ullink.gradle:gradle-nuget-plugin:2.23"
+        classpath "ca.kroll.gradle.gitversion:gradle-git-version:3.8.9"
+    }
+}
+
+apply plugin: "com.ullink.msbuild"
+apply plugin: "nuget-base"
+apply plugin: "ca.kroll.git-version"
+
+project.version = gitNugetVersion()
+project.ext.isProductionVersion = gitIsProductionVersion()
+project.ext.shouldDoNugetPublication = project.ext.isProductionVersion || hasProperty('doNugetPublish')
+   
+nuget {
+    version = '5.7.0'
+}
+ 
+clean {
+  delete 'build', 'obj'
+}
+
+build {	
+    dependsOn 'clean', 'msbuild'
+    finalizedBy 'writeJsonVersion'     
+}
+
+msbuild {
+    solutionFile = 'cel-net.sln'
+    verbosity = 'minimal'
+    targets = ['Restore', 'Rebuild']
+    generateDoc = false
+    configuration = 'Release'
+    parameters.Version = project.version   
+    parameters.FileVersion = project.ext.gitAssemblyFileVersion()
+    parameters.AssemblyVersion = project.ext.gitAssemblyVersion()
+    parameters.AssemblyInformationalVersion = project.ext.gitAssemblyInformationalVersion()
+}
+
+task publish() {
+    group = BasePlugin.BUILD_GROUP
+    description = 'Builds library and pushes nuget packages.'
+            
+    dependsOn build
+
+    if (project.ext.shouldDoNugetPublication && artifactoryNugetApiKey) {
+        dependsOn 'pushNuget'
+    }
+}
+
+task pushNuget(){
+    dependsOn 'pushCelNet'    
+}
+
+task pushCelNet(type: com.ullink.NuGetPush) {
+    nupkgFile = "${project.buildDir}/Cel.${project.version}.nupkg"
+    serverUrl = 'Artifactory'
+    apiKey = artifactoryNugetApiKey
+}

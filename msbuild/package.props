@@ -1,0 +1,6 @@
+﻿<Project>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageOutputPath>..\..\build</PackageOutputPath>
+    </PropertyGroup>
+</Project>

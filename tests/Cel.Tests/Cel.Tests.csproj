@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;net7.0;net8.0;net48</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>11.0</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Tools" Version="2.59.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+        <PackageReference Include="NUnit" Version="3.14.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Cel\Cel.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="tests\simple\testdata\**.*" />
+        <EmbeddedResource Include="tests\simple\testdata\binary\*.binpb" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="proto\**\*.proto" />
+        <Protobuf Include="proto\**\*.proto" GrpcServices="None" ProtoRoot="proto" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="proto\test\v1\proto2\" />
+    </ItemGroup>
+</Project>

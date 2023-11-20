@@ -1,0 +1,23 @@
+
+plumbing[Check that the ConformanceService server can accept all arguments and return all responses.]
+minMinimal programs.C
+min_program,Smallest functionality: expr in, result out.17Bü
+eval_resultsAll evaluation result kinds.O
+error_result$Check that error results go through.1 / 0J
+divide by zero}
+eval_map_results6Check that map literals results are order independent.{"k1":"v1","k":"v"}BZ
+
+
+2k2v
+
+2k12v1†
+check_inputsAll inputs to Check phase.Z
+
+skip_check$Make sure we can skip type checking.[17, 'pancakes'](Bb
+
+
+2pancakes”
+eval_inputsAll inputs to Eval phase.j
+one_ignored_value_arg8Check that value bindings can be given, even if ignored.'foo':	
+x
+B2foo
