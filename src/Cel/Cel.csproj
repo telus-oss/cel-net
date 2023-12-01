@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>11.0</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <Version>0.1.3</Version>
+        <Version>0.1.4</Version>
         <PackageId>Cel</PackageId>
         <Authors>TELUS</Authors>
         <Copyright>Copyright 2023 TELUS</Copyright>
@@ -21,13 +21,13 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
-        <PackageReference Include="Antlr4BuildTasks" Version="12.4.0" />
+        <PackageReference Include="Antlr4BuildTasks" Version="12.7.0" />
         <PackageReference Include="Google.Protobuf" Version="3.25.1" />
         <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup>
-        <None Include="README.md" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\" />
         <None Remove="Antlr\Cel.g4" />
         <Antlr4 Include="Antlr\Cel.g4">
           <Package>Cel.Internal</Package>
