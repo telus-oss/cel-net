@@ -566,12 +566,18 @@ public static class StringHelpers
 
     public static int SizeString(string value)
     {
-        // we want the number of characters in the string
-        // if we have emoji, then string.Length returns the byte count, not the
-        // symbol count.
-        // so we have to use StringInfo.
-        var stringInfo = new StringInfo(value);
-        return stringInfo.LengthInTextElements;
+        //we need the number of codepoints in the string.
+#if NETCOREAPP3_1_OR_GREATER
+        var runes = value.EnumerateRunes();
+        return runes.Count();
+#else
+        var length = 0;
+        for (var i = 0; i < value.Length; i += char.IsSurrogatePair(value, i) ? 2 : 1)
+        {
+            length += 1;
+        }
+        return length;
+#endif
     }
 
     public static bool EndsWithString(string value1, string value2)
