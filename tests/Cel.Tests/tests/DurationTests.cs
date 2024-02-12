@@ -24,7 +24,7 @@ public class DurationParsingTests
     public void TestDurationParsing(string value, TimeSpan expectedValue)
     {
         var actualValue = DurationHelpers.ConvertDurationString(value).ToTimeSpan();
-        Assert.AreEqual(expectedValue, actualValue);
+        Assert.That(actualValue, Is.EqualTo(expectedValue));
     }
 
     private static IEnumerable<object[]> GetTestCases()

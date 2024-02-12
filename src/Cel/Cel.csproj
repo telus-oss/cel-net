@@ -21,8 +21,8 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
-        <PackageReference Include="Antlr4BuildTasks" Version="12.7.0" />
-        <PackageReference Include="Google.Protobuf" Version="3.25.1" />
+        <PackageReference Include="Antlr4BuildTasks" Version="12.8.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.25.2" />
         <PackageReference Include="TimeZoneConverter" Version="6.1.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>

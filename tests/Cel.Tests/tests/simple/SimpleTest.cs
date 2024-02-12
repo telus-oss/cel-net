@@ -284,7 +284,7 @@ public class SimpleTestTests
 
         var context = celEnvironment.Parse(test.Expr);
 
-        Assert.IsNotNull(context);
+        Assert.That(context, Is.Not.Null);
 
         //check the expression parsed properly
         if (!test.DisableCheck)
@@ -303,7 +303,7 @@ public class SimpleTestTests
             programResult = UnpackWellKnownTypes(programResult, typeRegistry);
 
 
-            Assert.AreEqual(expectedValue, programResult);
+            Assert.That(programResult, Is.EqualTo(expectedValue));
         }
         catch (CelArgumentRangeException x)
         {
@@ -320,7 +320,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelArgumentRangeException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelArgumentRangeException was thrown but not expected.  {x}");
             }
         }
         catch (CelOverflowException x)
@@ -332,7 +332,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelOverflowException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelOverflowException was thrown but not expected.  {x}");
             }
         }
         catch (CelNoSuchFieldException x)
@@ -347,7 +347,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelNoSuchFieldException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelNoSuchFieldException was thrown but not expected.  {x}");
             }
         }
         catch (CelTypeDoesNotSupportFieldSelectionException x)
@@ -361,7 +361,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelTypeDoesNotSupportFieldSelectionException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelTypeDoesNotSupportFieldSelectionException was thrown but not expected.  {x}");
             }
         }
         catch (CelTypeCreationException x)
@@ -375,7 +375,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelTypeCreationException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelTypeCreationException was thrown but not expected.  {x}");
             }
         }
         catch (CelConversionException x)
@@ -389,7 +389,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelMessageConversionException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelMessageConversionException was thrown but not expected.  {x}");
             }
         }
         catch (CelMapUnsupportedKeyTypeException x)
@@ -403,7 +403,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelMapUnsupportedKeyTypeException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelMapUnsupportedKeyTypeException was thrown but not expected.  {x}");
             }
         }
         catch (CelMapDuplicateKeyException x)
@@ -417,7 +417,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelMapDuplicateKeyException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelMapDuplicateKeyException was thrown but not expected.  {x}");
             }
         }
         catch (CelNoSuchOverloadException x)
@@ -434,7 +434,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("NoSuchOverloadException was thrown but not expected.  {0}", x);
+                Assert.Fail($"NoSuchOverloadException was thrown but not expected.  {x}");
             }
         }
         catch (CelDivideByZeroException x)
@@ -447,7 +447,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelDivideByZeroException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelDivideByZeroException was thrown but not expected.  {x}");
             }
         }
         catch (CelModulusByZeroException x)
@@ -459,7 +459,7 @@ public class SimpleTestTests
             }
             else
             {
-                Assert.Fail("CelModulusByZeroException was thrown but not expected.  {0}", x);
+                Assert.Fail($"CelModulusByZeroException was thrown but not expected.  {x}");
             }
         }
     }
