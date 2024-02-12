@@ -18,6 +18,8 @@
         <PackageProjectUrl>https://github.com/telus-oss/cel-net</PackageProjectUrl>
         <RepositoryUrl>https://github.com/telus-oss/cel-net</RepositoryUrl>
         <IsPackable>true</IsPackable>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
@@ -30,7 +32,7 @@
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Remove="Antlr\Cel.g4" />
         <Antlr4 Include="Antlr\Cel.g4">
-          <Package>Cel.Internal</Package>
+            <Package>Cel.Internal</Package>
         </Antlr4>
     </ItemGroup>
 </Project>
