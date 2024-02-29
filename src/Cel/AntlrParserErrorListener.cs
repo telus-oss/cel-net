@@ -16,11 +16,11 @@ using Antlr4.Runtime;
 
 namespace Cel;
 
-internal class CelErrorListener : BaseErrorListener
+internal class AntlrParserErrorListener : BaseErrorListener
 {
     public List<string> ErrorList { get; } = new();
 
-    public CelErrorListener() { }
+    public AntlrParserErrorListener() { }
 
     public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
     {

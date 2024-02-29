@@ -61,23 +61,41 @@ public class CelEnvironment : ICelEnvironment
         }
         
         var inputStream = new AntlrInputStream(expression);
+
+        //setup the lexer
         var celLexer = new CelLexer(inputStream);
+        
+        //set up the error lexer listener.
+        var lexerErrorListener = new AntlrLexerErrorListener();
+        celLexer.RemoveErrorListeners();
+        celLexer.AddErrorListener(lexerErrorListener);
+       
+        //check if we have parsing errors
+        if (lexerErrorListener.ErrorList.Count > 0)
+        {
+            var errorMessages = string.Join(Environment.NewLine, lexerErrorListener.ErrorList);
+            throw new CelExpressionParserException(errorMessages);
+        }
+        
+
         var commonTokenStream = new CommonTokenStream(celLexer);
 
+
+        //setup the parser
         var celParser = new CelParser(commonTokenStream);
 
-        //set up the error listener.
-        var errorListener = new CelErrorListener();
+        //set up the error parser listener.
+        var parserErrorListener = new AntlrParserErrorListener();
         celParser.RemoveErrorListeners();
-        celParser.AddErrorListener(errorListener);
+        celParser.AddErrorListener(parserErrorListener);
 
         //parse the expression
         var startContext = celParser.start();
 
-        //check if we have errors
-        if (errorListener.ErrorList.Count > 0)
+        //check if we have parsing errors
+        if (parserErrorListener.ErrorList.Count > 0)
         {
-            var errorMessages = string.Join(Environment.NewLine, errorListener.ErrorList);
+            var errorMessages = string.Join(Environment.NewLine, parserErrorListener.ErrorList);
             throw new CelExpressionParserException(errorMessages);
         }
 

@@ -18,4 +18,19 @@ public class CelParserTests
         //test the compile function
         Assert.Throws<CelExpressionParserException>(() => celEnvironment.Compile(expression));
     }
+
+    [Test]
+    [TestCase("`")]
+    [TestCase("é")]
+    [TestCase("`!@#$%%^^&*(_(_")]
+    public void Invalid_Characters_In_Expression_Should_Throw_CelExpressionParserException(string expression)
+    {
+        var celEnvironment = new CelEnvironment(null, null);
+
+        //test the parse function
+        Assert.Throws<CelExpressionParserException>(() => celEnvironment.Parse(expression));
+
+        //test the compile function
+        Assert.Throws<CelExpressionParserException>(() => celEnvironment.Compile(expression));
+    }
 }
