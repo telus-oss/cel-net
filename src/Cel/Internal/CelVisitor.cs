@@ -14,6 +14,7 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Reflection;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Cel.Helpers;
@@ -1246,6 +1247,15 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
                 }
 
                 return new CelNoSuchField($"Cannot find overload to select field '{identifier}' in variable '{memberName}'.");
+            }
+
+            //we have a plain old CLR object that we want to get info for.
+            //this reflection is slow though so it is preferable to use IMessage
+            var memberType = member.GetType();
+            var memberPropertyInfo = memberType.GetProperty(identifier, BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static);
+            if (memberPropertyInfo != null && memberPropertyInfo.CanRead && memberPropertyInfo.GetIndexParameters().Length == 0)
+            {
+                return memberPropertyInfo.GetValue(member);
             }
 
             throw new CelTypeDoesNotSupportFieldSelectionException($"Type '{memberName}' does not support field selection for field '{identifier}'.");
