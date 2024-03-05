@@ -26,7 +26,7 @@ namespace Cel.Tests;
 [TestFixture]
 public class SimpleTestTests
 {
-    private static object? GetValue(Value? value, TypeRegistry typeRegistry)
+    private static object GetValue(Value value, TypeRegistry typeRegistry)
     {
         if (value == null)
         {
@@ -86,7 +86,7 @@ public class SimpleTestTests
                 return null;
             }
 
-            var result = new List<object?>();
+            var result = new List<object>();
             foreach (var entry in listValue.Values)
             {
                 var entryValue = GetValue(entry, typeRegistry);
@@ -103,7 +103,7 @@ public class SimpleTestTests
                 return null;
             }
 
-            var result = new Dictionary<string, object?>();
+            var result = new Dictionary<string, object>();
             foreach (var entry in value!.MapValue.Entries)
             {
                 var entryKey = GetValue(entry.Key, typeRegistry)?.ToString();
@@ -202,7 +202,7 @@ public class SimpleTestTests
         throw new Exception($"Value kind {value.KindCase} is not supported by SimpleTest suite.");
     }
 
-    private static object? UnpackWellKnownTypes(object? value, TypeRegistry typeRegistry)
+    private static object UnpackWellKnownTypes(object value, TypeRegistry typeRegistry)
     {
         if (value is Any valueAny)
         {
@@ -272,7 +272,7 @@ public class SimpleTestTests
         };
         var typeRegistry = TypeRegistry.FromFiles(fileDescriptors);
 
-        var variables = new Dictionary<string, object?>();
+        var variables = new Dictionary<string, object>();
         foreach (var binding in test.Bindings)
         {
             variables[binding.Key] = GetValue(binding.Value.Value, typeRegistry);
@@ -321,6 +321,32 @@ public class SimpleTestTests
             else
             {
                 Assert.Fail($"CelArgumentRangeException was thrown but not expected.  {x}");
+            }
+        }
+        catch (CelUndeclaredReferenceException x)
+        {
+            var evalError = test.EvalError?.Errors?.FirstOrDefault();
+            var message = evalError?.Message ?? "";
+            if (message.Contains("undeclared reference"))
+            {
+                //this is good
+            }
+            else
+            {
+                Assert.Fail($"CelUndeclaredReferenceException was thrown but not expected.  {x}");
+            }
+        }
+        catch (CelUnboundFunctionException x)
+        {
+            var evalError = test.EvalError?.Errors?.FirstOrDefault();
+            var message = evalError?.Message ?? "";
+            if (message.Contains( "unbound function"))
+            {
+                //this is good
+            }
+            else
+            {
+                Assert.Fail($"CelUnboundFunctionException was thrown but not expected.  {x}");
             }
         }
         catch (CelOverflowException x)

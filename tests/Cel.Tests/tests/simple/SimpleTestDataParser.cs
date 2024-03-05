@@ -74,7 +74,7 @@ public class SimpleTestDataParser
         return simpleTestResourceNames.ToArray();
     }
 
-    public static SimpleTestFile? ParseTextProtoFile(string resourceName)
+    public static SimpleTestFile ParseTextProtoFile(string resourceName)
     {
         var assembly = Assembly.GetExecutingAssembly();
 

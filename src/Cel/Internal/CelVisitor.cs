@@ -655,10 +655,24 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
             var leadingDot = context.leadingDot;
             var id = context.id;
             var identifier = id.Text;
+            var variableName = leadingDot?.Text ?? "" + id.Text;
 
             if (!string.IsNullOrWhiteSpace(identifier))
             {
+                object? args = null;
                 var exprList = context.exprList();
+
+                if (exprList != null)
+                {
+                    //we have a function with arguments.
+                    args = Visit(exprList).Invoke(tryGetVariable);
+                    if (args is not object?[])
+                    {
+                        //wrap the args into an array if they aren't an array already.
+                        args = new[] { args };
+                    }
+                }
+
                 if (exprList == null)
                 {
                     //we have a variable;
@@ -667,20 +681,11 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
                         return internalVariableValue;
                     }
 
-                    if (TryGetVariableWithNamespace(tryGetVariable, MessageNamespace, leadingDot?.Text ?? "" + id.Text, out var variableValue))
+
+                    if (TryGetVariableWithNamespace(tryGetVariable, MessageNamespace, variableName, out var variableValue))
                     {
                         return variableValue;
                     }
-
-                    return base.VisitIdentOrGlobalCall(context);
-                }
-
-                //we have a function with arguments.
-                var args = Visit(exprList).Invoke(tryGetVariable);
-                if (args is not object?[])
-                {
-                    //wrap the args into an array if they aren't an array already.
-                    args = new[] { args };
                 }
 
                 var enumDescriptor = GetEnumDescriptor(identifier);
@@ -700,13 +705,29 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
                     }
                 }
 
-                if (Functions.TryGetFunctionWithArgValues(identifier, (object?[])args, out var internalFunction))
+                var nonNullArgs = (object?[])(args ?? Array.Empty<object?>());
+                if (Functions.TryGetFunctionWithArgValues(identifier, nonNullArgs, out var internalFunction))
                 {
-                    return internalFunction!.Invoke((object?[])args);
+                    return internalFunction!.Invoke(nonNullArgs);
                 }
+
+                if (context.Parent is CelParser.PrimaryExprContext && context.Parent?.Parent is CelParser.MemberCallContext)
+                {
+                    //this is to pass test SimpleTest(enums, strong_proto2, assign_standalone_int)
+                    //with expression "TestAllTypes{standalone_enum: TestAllTypes.NestedEnum(1)}"
+                    return base.VisitIdentOrGlobalCall(context);
+                }
+
+
+                if (exprList != null)
+                {
+                    throw new CelUnboundFunctionException($"Unbound function '{variableName}'.");
+                }
+
+                throw new CelUndeclaredReferenceException($"Undeclared reference to '{variableName}' in container '{MessageNamespace}'.");
             }
 
-            return base.VisitIdentOrGlobalCall(context);
+            throw new CelExpressionParserException("Identifier not specified.");
         };
     }
 

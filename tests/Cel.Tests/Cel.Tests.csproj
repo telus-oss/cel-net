@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>net6.0;net7.0;net8.0;net48</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <LangVersion>11.0</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
@@ -30,9 +30,5 @@
     <ItemGroup>
         <None Remove="proto\**\*.proto" />
         <Protobuf Include="proto\**\*.proto" GrpcServices="None" ProtoRoot="proto" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="proto\test\v1\proto2\" />
     </ItemGroup>
 </Project>
