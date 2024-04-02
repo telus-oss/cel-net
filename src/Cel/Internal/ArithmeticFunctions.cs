@@ -36,6 +36,11 @@ public static class ArithmeticFunctions
                 return DoubleHelpers.AddDouble(doubleValue, otherValue);
             }
 
+            if (value is decimal decimalValue)
+            {
+                return DecimalHelpers.AddDecimal(decimalValue, otherValue);
+            }
+            
             if (value is long longValue)
             {
                 return Int64Helpers.AddInt(longValue, otherValue);
@@ -117,6 +122,11 @@ public static class ArithmeticFunctions
                 return DoubleHelpers.SubtractDouble(doubleValue, otherValue);
             }
 
+            if (value is decimal decimalValue)
+            {
+                return DecimalHelpers.SubtractDecimal(decimalValue, otherValue);
+            }
+
             if (value is long longValue)
             {
                 return Int64Helpers.SubtractInt(longValue, otherValue);
@@ -174,6 +184,11 @@ public static class ArithmeticFunctions
                 return DoubleHelpers.MultiplyDouble(doubleValue, otherValue);
             }
 
+            if (value is decimal decimalValue)
+            {
+                return DecimalHelpers.MultiplyDecimal(decimalValue, otherValue);
+            }
+
             if (value is long longValue)
             {
                 return Int64Helpers.MultiplyInt(longValue, otherValue);
@@ -208,6 +223,11 @@ public static class ArithmeticFunctions
             if (value is double doubleValue)
             {
                 return DoubleHelpers.DivideDouble(doubleValue, otherValue);
+            }
+
+            if (value is decimal decimalValue)
+            {
+                return DecimalHelpers.DivideDecimal(decimalValue, otherValue);
             }
 
             if (value is long longValue)
@@ -247,6 +267,11 @@ public static class ArithmeticFunctions
                 return DoubleHelpers.ModulusDouble(doubleValue, otherValue);
             }
 
+            if (value is decimal decimalValue)
+            {
+                return DecimalHelpers.ModulusDecimal(decimalValue, otherValue);
+            }
+            
             if (value is int intValue)
             {
                 return Int64Helpers.ModulusInt(intValue, otherValue);
@@ -300,6 +325,11 @@ public static class ArithmeticFunctions
         if (value is double doubleValue)
         {
             return DoubleHelpers.NegateDouble(doubleValue);
+        }
+
+        if (value is decimal decimalValue)
+        {
+            return DecimalHelpers.NegateDecimal(decimalValue);
         }
 
         if (value is long longValue)

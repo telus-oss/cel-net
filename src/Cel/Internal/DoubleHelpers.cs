@@ -85,6 +85,21 @@ public static class DoubleHelpers
         return 0;
     }
 
+    public static int CompareDoubleDouble(double a, decimal b)
+    {
+        const double decimalMin = (double)decimal.MinValue;
+        const double decimalMax = (double)decimal.MaxValue;
+        if (a < decimalMin)
+        {
+            return -1;
+        }
+
+        if (a > decimalMax)
+        {
+            return 1;
+        }
+        return ((decimal)a).CompareTo(b);
+    }
 
     public static int CompareDoubleInt(double d, long i)
     {
@@ -98,7 +113,7 @@ public static class DoubleHelpers
             return 1;
         }
 
-        return CompareDoubleDouble(d, i);
+        return CompareDoubleDouble(d, (double)i);
     }
 
     public static int CompareDoubleUInt(double d, ulong u)
@@ -113,7 +128,7 @@ public static class DoubleHelpers
             return 1;
         }
 
-        return CompareDoubleDouble(d, u);
+        return CompareDoubleDouble(d, (double)u);
     }
 
     #endregion
@@ -181,6 +196,11 @@ public static class DoubleHelpers
             return AddDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is decimal)
+        {
+            return AddDoubleDecimal(value, (decimal)otherValue);
+        }
+
         if (otherValue is long)
         {
             return AddDoubleInt(value, (long)otherValue);
@@ -199,7 +219,10 @@ public static class DoubleHelpers
     {
         return a + b;
     }
-
+    public static double AddDoubleDecimal(double a, decimal b)
+    {
+        return a + (double)b;
+    }
     public static double AddDoubleInt(double d, long i)
     {
         return d + i;
@@ -221,6 +244,11 @@ public static class DoubleHelpers
             return SubtractDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is decimal)
+        {
+            return SubtractDoubleDecimal(value, (decimal)otherValue);
+        }
+
         if (otherValue is long)
         {
             return SubtractDoubleInt(value, (long)otherValue);
@@ -238,6 +266,11 @@ public static class DoubleHelpers
     public static double SubtractDoubleDouble(double a, double b)
     {
         return a - b;
+    }
+
+    public static double SubtractDoubleDecimal(double a, decimal b)
+    {
+        return a - (double)b;
     }
 
     public static double SubtractDoubleInt(double d, long i)
@@ -261,6 +294,11 @@ public static class DoubleHelpers
             return MultiplyDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is decimal)
+        {
+            return MultiplyDoubleDecimal(value, (decimal)otherValue);
+        }
+
         if (otherValue is long)
         {
             return MultiplyDoubleInt(value, (long)otherValue);
@@ -278,6 +316,10 @@ public static class DoubleHelpers
     public static double MultiplyDoubleDouble(double a, double b)
     {
         return a * b;
+    }
+    public static double MultiplyDoubleDecimal(double a, decimal b)
+    {
+        return a * (double)b;
     }
 
     public static double MultiplyDoubleInt(double d, long i)
@@ -299,6 +341,11 @@ public static class DoubleHelpers
         if (otherValue is double)
         {
             return DivideDoubleDouble(value, (double)otherValue);
+        }
+
+        if (otherValue is decimal)
+        {
+            return DivideDoubleDecimal(value, (decimal)otherValue);
         }
 
         if (otherValue is long)
@@ -324,7 +371,15 @@ public static class DoubleHelpers
 
         return a / b;
     }
+    public static double DivideDoubleDecimal(double a, decimal b)
+    {
+        if (b == 0)
+        {
+            return double.NaN;
+        }
 
+        return a / (double)b;
+    }
     public static double DivideDoubleInt(double d, long i)
     {
         if (i == 0)
@@ -346,7 +401,7 @@ public static class DoubleHelpers
     }
 
     #endregion
-    
+
     #region Modulus
 
     public static double ModulusDouble(double value, object? otherValue)
@@ -354,6 +409,11 @@ public static class DoubleHelpers
         if (otherValue is double)
         {
             return ModulusDoubleDouble(value, (double)otherValue);
+        }
+
+        if (otherValue is decimal)
+        {
+            return ModulusDoubleDecimal(value, (decimal)otherValue);
         }
 
         if (otherValue is long)
@@ -373,6 +433,11 @@ public static class DoubleHelpers
     public static double ModulusDoubleDouble(double a, double b)
     {
         throw new CelNoSuchOverloadException("No overload exists to MODULUS double and double.");
+    }
+
+    public static double ModulusDoubleDecimal(double a, decimal b)
+    {
+        throw new CelNoSuchOverloadException("No overload exists to MODULUS double and decimal.");
     }
 
     public static double ModulusDoubleInt(double d, long i)

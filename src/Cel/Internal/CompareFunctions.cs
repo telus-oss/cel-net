@@ -62,7 +62,12 @@ public static class CompareFunctions
         {
             return DoubleHelpers.CompareDouble(wrappedFloatValue.Value, otherValue);
         }
-
+        
+        if (value is decimal decimalValue)
+        {
+            return DecimalHelpers.CompareDecimal(decimalValue, otherValue);
+        }
+        
         if (value is long longValue)
         {
             return Int64Helpers.CompareInt(longValue, otherValue);
@@ -102,7 +107,7 @@ public static class CompareFunctions
         {
             return UInt64Helpers.CompareUInt(wrappedUInt64Value.Value, otherValue);
         }
-
+        
         if (value is bool boolValue)
         {
             return BooleanHelpers.CompareBool(boolValue, otherValue);

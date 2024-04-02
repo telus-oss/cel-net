@@ -30,36 +30,66 @@ public static class CelFunctions
 
         functions.RegisterFunction("bytes", new[] { typeof(ByteString) }, ConvertBytes);
         functions.RegisterFunction("bytes", new[] { typeof(string) }, ConvertBytes);
-
-        functions.RegisterFunction("double", new[] { typeof(double) }, ConvertDouble);
+        
+        functions.RegisterFunction("double", new[] { typeof(byte) }, ConvertDouble);
+        functions.RegisterFunction("double", new[] { typeof(short) }, ConvertDouble);
+        functions.RegisterFunction("double", new[] { typeof(ushort) }, ConvertDouble);
+        functions.RegisterFunction("double", new[] { typeof(int) }, ConvertDouble);
+        functions.RegisterFunction("double", new[] { typeof(uint) }, ConvertDouble);
         functions.RegisterFunction("double", new[] { typeof(long) }, ConvertDouble);
         functions.RegisterFunction("double", new[] { typeof(ulong) }, ConvertDouble);
+        functions.RegisterFunction("double", new[] { typeof(double) }, ConvertDouble);
+        functions.RegisterFunction("double", new[] { typeof(float) }, ConvertDouble);
+        functions.RegisterFunction("double", new[] { typeof(double) }, ConvertDouble);
         functions.RegisterFunction("double", new[] { typeof(string) }, ConvertDouble);
-
+        
+        functions.RegisterFunction("decimal", new[] { typeof(byte) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(short) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(ushort) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(int) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(uint) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(long) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(ulong) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(double) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(float) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(decimal) }, ConvertDecimal);
+        functions.RegisterFunction("decimal", new[] { typeof(string) }, ConvertDecimal);
+        
         functions.RegisterFunction("int", new[] { typeof(byte) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(short) }, ConvertInt);
+        functions.RegisterFunction("int", new[] { typeof(ushort) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(int) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(long) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(ulong) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(double) }, ConvertInt);
+        functions.RegisterFunction("int", new[] { typeof(decimal) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(string) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(Enum) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(EnumValueDescriptor) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(DateTimeOffset) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(DateTime) }, ConvertInt);
 
+        functions.RegisterFunction("uint", new[] { typeof(byte) }, ConvertUInt);
+        functions.RegisterFunction("uint", new[] { typeof(short) }, ConvertUInt);
+        functions.RegisterFunction("uint", new[] { typeof(ushort) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(int) }, ConvertUInt);
+        functions.RegisterFunction("uint", new[] { typeof(uint) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(long) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(ulong) }, ConvertUInt);
+        functions.RegisterFunction("uint", new[] { typeof(decimal) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(double) }, ConvertUInt);
+        functions.RegisterFunction("uint", new[] { typeof(float) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(string) }, ConvertUInt);
 
         functions.RegisterFunction("string", new[] { typeof(string) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(bool) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(ByteString) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(double) }, ConvertString);
+        functions.RegisterFunction("string", new[] { typeof(decimal) }, ConvertString);
+        functions.RegisterFunction("string", new[] { typeof(float) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(long) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(ulong) }, ConvertString);
+        functions.RegisterFunction("string", new[] { typeof(decimal) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(DateTimeOffset) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(DateTime) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(TimeSpan) }, ConvertString);
@@ -208,7 +238,15 @@ public static class CelFunctions
 
         return DoubleHelpers.ConvertDouble(value[0]);
     }
+    public static object? ConvertDecimal(object?[] value)
+    {
+        if (value.Length != 1)
+        {
+            throw new CelExpressionParserException("Decimal function requires 1 argument.");
+        }
 
+        return DecimalHelpers.ConvertDecimal(value[0]);
+    }
     public static object? ConvertInt(object?[] value)
     {
         if (value.Length != 1)

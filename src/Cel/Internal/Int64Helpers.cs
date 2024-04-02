@@ -33,6 +33,11 @@ public static class Int64Helpers
             return CompareIntDouble(value, (double)otherValue);
         }
 
+        if (otherValue is decimal)
+        {
+            return CompareIntDecimal(value, (decimal)otherValue);
+        }
+
         if (otherValue is long)
         {
             return CompareIntInt(value, (long)otherValue);
@@ -61,6 +66,11 @@ public static class Int64Helpers
         throw new CelNoSuchOverloadException($"Could not compare int64 values '{value}' with type '{value.GetType()}' and '{otherValue}' with type '{otherValue.GetType()}'.");
     }
 
+    public static int CompareIntDecimal(long a, decimal b)
+    {
+        return -DecimalHelpers.CompareDecimalInt(b, a);
+    }
+    
     public static int CompareIntInt(long a, long b)
     {
         if (a < b)
@@ -144,6 +154,11 @@ public static class Int64Helpers
             return ConvertIntDouble(doubleValue);
         }
 
+        if (value is decimal decimalValue)
+        {
+            return ConvertIntDecimal(decimalValue);
+        }
+
         if (value is string strValue)
         {
             return ConvertIntString(strValue);
@@ -218,7 +233,37 @@ public static class Int64Helpers
             throw new CelArgumentRangeException($"Could not convert '{value}' to Int.");
         }
     }
+    public static long ConvertIntDecimal(decimal value)
+    {
+        try
+        {
+            if (value <= long.MinValue)
+            {
+                //from the spec
+                //Double to int conversions are limited to (minInt, maxInt) non-inclusive.
+                throw new CelArgumentRangeException($"Could not convert '{value}' to Int.");
+            }
 
+            if (value >= long.MaxValue)
+            {
+                //from the spec
+                //Double to int conversions are limited to (minInt, maxInt) non-inclusive.
+                throw new CelArgumentRangeException($"Could not convert '{value}' to Int.");
+            }
+
+            value = Math.Truncate(value);
+
+            return Convert.ToInt64(value);
+        }
+        catch (CelArgumentRangeException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw new CelArgumentRangeException($"Could not convert '{value}' to Int.");
+        }
+    }
     public static long ConvertIntString(string token)
     {
         if (token.StartsWith("0x"))

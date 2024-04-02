@@ -32,6 +32,11 @@ public static class UInt64Helpers
             return CompareUIntDouble(value, (double)otherValue);
         }
 
+        if (otherValue is decimal)
+        {
+            return CompareUIntDecimal(value, (decimal)otherValue);
+        }
+
         if (otherValue is long)
         {
             return CompareUIntInt(value, (long)otherValue);
@@ -58,6 +63,10 @@ public static class UInt64Helpers
     public static int CompareUIntDouble(ulong u, double d)
     {
         return -DoubleHelpers.CompareDoubleUInt(d, u);
+    }
+    public static int CompareUIntDecimal(ulong u, decimal d)
+    {
+        return -DecimalHelpers.CompareDecimalUInt(d, u);
     }
 
     public static int CompareUIntUInt(ulong a, ulong b)
@@ -206,7 +215,7 @@ public static class UInt64Helpers
     }
 
     #endregion
-    
+
     #region Subtract
 
     public static ulong SubtractUInt(ulong value, object? otherValue)
@@ -225,7 +234,7 @@ public static class UInt64Helpers
     }
 
     #endregion
-    
+
     #region Multiply
 
     public static ulong MultiplyUInt(ulong value, object? otherValue)
@@ -244,7 +253,7 @@ public static class UInt64Helpers
     }
 
     #endregion
-    
+
     #region Divide
 
     public static ulong DivideUInt(ulong value, object? otherValue)
@@ -268,7 +277,7 @@ public static class UInt64Helpers
     }
 
     #endregion
-    
+
     #region Modulus
 
     public static ulong ModulusUInt(ulong value, object? otherValue)
