@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>11.0</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <Version>0.2.0-alpha-2</Version>
+        <Version>0.2.1</Version>
         <PackageId>Cel</PackageId>
         <Authors>TELUS</Authors>
         <Copyright>Copyright 2023 TELUS</Copyright>

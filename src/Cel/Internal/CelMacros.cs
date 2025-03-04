@@ -351,7 +351,7 @@ public static class CelMacros
             throw new ArgumentNullException(nameof(predicate));
         }
 
-        if (value is object?[] valueList)
+        if (value is IEnumerable<object?> valueList)
         {
             return MapList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueList);
         }
@@ -359,8 +359,13 @@ public static class CelMacros
         throw new CelNoSuchOverloadException($"No overload Map for 'map' macro with argument type '{value?.GetType().FullName ?? "null"}'.");
     }
 
-    private static object MapList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, object?[] valueList)
+    private static object? MapList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, IEnumerable<object?>? valueList)
     {
+        if (valueList == null)
+        {
+            return null;
+        }
+
         var output = new List<object?>();
 
         foreach (var itemValue in valueList)
