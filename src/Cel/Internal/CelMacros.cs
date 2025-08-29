@@ -35,15 +35,21 @@ public static class CelMacros
         {
             throw new ArgumentNullException(nameof(predicate));
         }
+  
 
+        if (value is IDictionary<string, object?> valueDictObject)
+        {
+            return AllList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueDictObject.Keys.ToList());
+        }
+
+        if (value is IDictionary valueDict)
+        {
+            return AllList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, new ArrayList(valueDict.Keys));
+        }
+        
         if (value is IList valueList)
         {
             return AllList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueList);
-        }
-
-        if (value is IDictionary<string, object?> valueDict)
-        {
-            return AllList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueDict.Keys.ToList());
         }
 
         throw new CelNoSuchOverloadException($"No overload exists for 'all' macro with argument type '{value?.GetType().FullName ?? "null"}'.");
@@ -128,20 +134,26 @@ public static class CelMacros
             throw new ArgumentNullException(nameof(predicate));
         }
 
-        if (value is IList valueList)
-        {
-            return ExistsList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueList);
-        }
-
         if (value is IDictionary<string, object?> valueDict)
         {
             return ExistsList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueDict.Keys.ToList());
         }
+        
+        if (value is IEnumerable<object?> valueEnumerableObject)
+        {
+            return ExistsList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerableObject);
+        }
+
+        if (value is IEnumerable valueEnumerable)
+        {
+            return ExistsList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerable);
+        }
+
 
         throw new CelNoSuchOverloadException($"No overload exists for 'exists' macro with argument type '{value?.GetType().FullName ?? "null"}'.");
     }
 
-    private static object? ExistsList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, ICollection valueList)
+    private static object? ExistsList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, IEnumerable valueList)
     {
         var matchCount = 0;
 
@@ -197,21 +209,26 @@ public static class CelMacros
         {
             throw new ArgumentNullException(nameof(predicate));
         }
-
-        if (value is IList valueList)
-        {
-            return ExistsOneList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueList);
-        }
-
+        
         if (value is IDictionary<string, object?> valueDict)
         {
             return ExistsOneList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueDict.Keys.ToList());
+        }
+        
+        if (value is IEnumerable<object?> valueEnumerableObject)
+        {
+            return ExistsOneList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerableObject);
+        }
+
+        if (value is IEnumerable valueEnumerable)
+        {
+            return ExistsOneList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerable);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists for 'exists_one' macro with argument type '{value?.GetType().FullName ?? "null"}'.");
     }
 
-    private static object? ExistsOneList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, ICollection valueList)
+    private static object? ExistsOneList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, IEnumerable valueList)
     {
         var noSuchOverload = false;
         Exception? exception = null;
@@ -289,15 +306,25 @@ public static class CelMacros
             throw new ArgumentNullException(nameof(predicate));
         }
 
-        if (value is object?[] valueList)
+        if (value == null)
         {
-            return FilterList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueList);
+            return null;
+        }
+
+        if (value is IEnumerable<object?> valueEnumerableObject)
+        {
+            return FilterList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerableObject);
+        }
+
+        if (value is IEnumerable valueEnumerable)
+        {
+            return FilterList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerable);
         }
 
         throw new CelNoSuchOverloadException($"No overload Filter for 'filter' macro with argument type '{value?.GetType().FullName ?? "null"}'.");
     }
 
-    private static object FilterList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, object?[] valueList)
+    private static object FilterList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, IEnumerable valueList)
     {
         var output = new List<object?>();
 
@@ -351,21 +378,26 @@ public static class CelMacros
             throw new ArgumentNullException(nameof(predicate));
         }
 
-        if (value is IEnumerable<object?> valueList)
+        if (value == null)
         {
-            return MapList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueList);
+            return null;
+        }
+
+        if (value is IEnumerable<object?> valueEnumerableObject)
+        {
+            return MapList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerableObject);
+        }
+
+        if (value is IEnumerable valueEnumerable)
+        {
+            return MapList(variableName, predicate, tryGetVariableDelegate, tryGetFunctionWithArgValuesDelegate, valueEnumerable);
         }
 
         throw new CelNoSuchOverloadException($"No overload Map for 'map' macro with argument type '{value?.GetType().FullName ?? "null"}'.");
     }
 
-    private static object? MapList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, IEnumerable<object?>? valueList)
+    private static object MapList(string variableName, CelExpressionDelegate predicate, TryGetVariableDelegate tryGetVariableDelegate, TryGetFunctionWithArgValuesDelegate tryGetFunctionWithArgValuesDelegate, IEnumerable valueList)
     {
-        if (valueList == null)
-        {
-            return null;
-        }
-
         var output = new List<object?>();
 
         foreach (var itemValue in valueList)
