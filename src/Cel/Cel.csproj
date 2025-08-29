@@ -2,15 +2,15 @@
     <Import Project="..\..\msbuild\package.props" />
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>11.0</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <Version>0.2.1</Version>
+        <Version>0.3.0</Version>
         <PackageId>Cel</PackageId>
         <Authors>TELUS</Authors>
-        <Copyright>Copyright 2023 TELUS</Copyright>
+        <Copyright>Copyright 2023-2025 TELUS</Copyright>
         <Description>C# implementation of Google Common Expression Language (https://github.com/google/cel-spec)</Description>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>CEL</PackageTags>
@@ -24,8 +24,9 @@
     <ItemGroup>
         <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
         <PackageReference Include="Antlr4BuildTasks" Version="12.10.0" />
-        <PackageReference Include="Google.Protobuf" Version="3.29.3" />
+        <PackageReference Include="Google.Protobuf" Version="3.25.2" />
         <PackageReference Include="TimeZoneConverter" Version="7.0.0" />
+        <PackageReference Include="System.Collections.Immutable" Version="9.0.8" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup>
