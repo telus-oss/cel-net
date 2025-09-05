@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
@@ -456,6 +457,14 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
                         {
                             list.AddRange(valuesList);
                         }
+                        else if (valuesDictEntry is IEnumerable<object?> valueEnumerableObject)
+                        {
+                            list.AddRange(valueEnumerableObject);
+                        }
+                        else if (valuesDictEntry is IEnumerable valueIEnumerable)
+                        {
+                            list.AddRange(valueIEnumerable.Cast<object?>());
+                        }
                     }
                 }
 
@@ -677,15 +686,13 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
                 if (exprList == null)
                 {
                     //we have a variable;
-                    if (CelAbstractTypes.TryGetValue(id.Text, out var internalVariableValue))
-                    {
-                        return internalVariableValue;
-                    }
-
-
                     if (TryGetVariableWithNamespace(tryGetVariable, MessageNamespace, variableName, out var variableValue))
                     {
                         return variableValue;
+                    }
+                    if (CelAbstractTypes.TryGetValue(id.Text, out var internalVariableValue))
+                    {
+                        return internalVariableValue;
                     }
                 }
 
@@ -739,20 +746,19 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
             var member = Visit(context.member()).Invoke(tryGetVariable);
             var index = Visit(context.expr()).Invoke(tryGetVariable);
 
-
             if (member is object?[] memberArray)
             {
-                if (index is long indexAsInt) { }
+                if (index is long indexAsLong) { }
                 else if (index is ulong indexAsUInt)
                 {
-                    indexAsInt = Int64Helpers.ConvertInt(indexAsUInt);
+                    indexAsLong = Int64Helpers.ConvertInt(indexAsUInt);
                 }
                 else if (index is double indexAsDouble)
                 {
                     if (indexAsDouble % 1 == 0)
                     {
                         //the double has no fraction
-                        indexAsInt = Int64Helpers.ConvertIntDouble(indexAsDouble);
+                        indexAsLong = Int64Helpers.ConvertIntDouble(indexAsDouble);
                     }
                     else
                     {
@@ -764,13 +770,45 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
                 {
                     throw new CelArgumentRangeException("Index argument error.");
                 }
-
-                if (indexAsInt < 0 || indexAsInt >= memberArray.Length)
+                if (indexAsLong < 0 || indexAsLong >= memberArray.Length)
                 {
                     throw new CelArgumentRangeException("Index out of range.");
                 }
 
-                var result = memberArray[indexAsInt];
+                var result = memberArray[indexAsLong];
+                return result;
+            }
+
+            if (member is IList memberIList)
+            {
+                if (index is long indexAsLong) { }
+                else if (index is ulong indexAsUInt)
+                {
+                    indexAsLong = Int64Helpers.ConvertInt(indexAsUInt);
+                }
+                else if (index is double indexAsDouble)
+                {
+                    if (indexAsDouble % 1 == 0)
+                    {
+                        //the double has no fraction
+                        indexAsLong = Int64Helpers.ConvertIntDouble(indexAsDouble);
+                    }
+                    else
+                    {
+                        //the double has a fraction.
+                        throw new CelArgumentRangeException("Index argument error.");
+                    }
+                }
+                else
+                {
+                    throw new CelArgumentRangeException("Index argument error.");
+                }
+                if (indexAsLong < 0 || indexAsLong >= memberIList.Count)
+                {
+                    throw new CelArgumentRangeException("Index out of range.");
+                }
+
+                var result = memberIList[(int)indexAsLong];
                 return result;
             }
 
@@ -784,7 +822,40 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
 
                 throw new CelArgumentRangeException("Key out of range.");
             }
+            
+            if (member is IDictionary memberIDictionary)
+            {
+                // Handle Google.Protobuf.Collections.MapField<TKey, TValue> with type conversion
+                if (member != null && member.GetType().IsGenericType && 
+                    member.GetType().GetGenericTypeDefinition().FullName == "Google.Protobuf.Collections.MapField`2")
+                {
+                    var genericArgs = member.GetType().GetGenericArguments();
+                    var keyType = genericArgs[0];
+                    
+                    // Try to convert the index to the expected key type
+                    object? convertedKey = TryConvertKeyForMapField(index, keyType);
+                    if (convertedKey != null && memberIDictionary.Contains(convertedKey))
+                    {
+                        return memberIDictionary[convertedKey];
+                    }
+                }
+                
+                // For other IDictionary implementations, first try the index as-is
+                if (index != null && memberIDictionary.Contains(index))
+                {
+                    return memberIDictionary[index];
+                }
 
+                // If the original index doesn't work, try converting to string for string-keyed dictionaries
+                var indexAsString = StringHelpers.ConvertString(index);
+                if (!string.IsNullOrEmpty(indexAsString) && memberIDictionary.Contains(indexAsString))
+                {
+                    return memberIDictionary[indexAsString];
+                }
+
+                throw new CelArgumentRangeException("Key out of range.");
+            }
+           
             if (member is IMessage memberMessage && index is string indexString)
             {
                 var fieldDescriptor = memberMessage.Descriptor.FindFieldByName(indexString);
@@ -798,12 +869,67 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
 
             if (member == null)
             {
-                return null;
-                //throw new CelExpressionParserException("List or map cannot be null.");
+                //return null;
+                throw new CelExpressionParserException("List or map cannot be null.");
             }
 
             return base.VisitIndex(context);
         };
+    }
+    
+    /// <summary>
+    /// Attempts to convert the index to the expected key type for MapField access.
+    /// Handles common type conversions between CEL types and Protocol Buffer key types.
+    /// </summary>
+    /// <param name="index">The index value from the CEL expression</param>
+    /// <param name="targetKeyType">The expected key type of the MapField</param>
+    /// <returns>The converted key, or null if conversion is not possible</returns>
+    private static object? TryConvertKeyForMapField(object? index, Type targetKeyType)
+    {
+        if (index == null)
+            return null;
+
+        // If types already match, return as-is
+        if (targetKeyType.IsAssignableFrom(index.GetType()))
+            return index;
+
+        try
+        {
+            // Handle common Protocol Buffer key type conversions
+            if (targetKeyType == typeof(int))
+            {
+                return MessageHelpers.ConvertToInt32(index);
+            }
+            else if (targetKeyType == typeof(uint))
+            {
+                return MessageHelpers.ConvertToUInt32(index);
+            }
+            else if (targetKeyType == typeof(long))
+            {
+                return Int64Helpers.ConvertInt(index);
+            }
+            else if (targetKeyType == typeof(ulong))
+            {
+                return UInt64Helpers.ConvertUInt(index);
+            }
+            else if (targetKeyType == typeof(bool))
+            {
+                // Boolean keys should match exactly
+                return index is bool ? index : null;
+            }
+            else if (targetKeyType == typeof(string))
+            {
+                return StringHelpers.ConvertString(index);
+            }
+            
+            // For any other types, try direct conversion
+            return Convert.ChangeType(index, targetKeyType);
+        }
+        catch
+        {
+            // If conversion fails, return null to indicate failure
+            return null;
+        }
     }
 
     public override CelExpressionDelegate VisitInt([NotNull] CelParser.IntContext context)
@@ -1144,6 +1270,8 @@ internal class CelVisitor : CelBaseVisitor<CelExpressionDelegate>
             //we can only check equality
             if (leftResult is object?[]
                 || rightResult is object[]
+                || leftResult is IList
+                || rightResult is IList
                 || leftResult is Dictionary<string, object?>
                 || rightResult is Dictionary<string, object?>
                 || leftResult == null

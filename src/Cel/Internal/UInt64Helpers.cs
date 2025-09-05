@@ -90,9 +90,34 @@ public static class UInt64Helpers
 
     public static ulong ConvertUInt(object? value)
     {
+        if (value is byte byteValue)
+        {
+            return byteValue;
+        }
+
+        if (value is ushort ushortValue)
+        {
+            return ushortValue;
+        }
+
+        if (value is uint uintValue)
+        {
+            return uintValue;
+        }
+
         if (value is ulong ulongValue)
         {
             return ulongValue;
+        }
+
+        if (value is sbyte sbyteValue)
+        {
+            return ConvertUIntInt(sbyteValue);
+        }
+
+        if (value is short shortValue)
+        {
+            return ConvertUIntInt(shortValue);
         }
 
         if (value is int intValue)
@@ -201,9 +226,77 @@ public static class UInt64Helpers
 
     public static ulong AddUInt(ulong value, object? otherValue)
     {
-        if (otherValue is ulong)
+        if (otherValue is byte byteValue)
         {
-            return AddUIntUInt(value, (ulong)otherValue);
+            return AddUIntUInt(value, byteValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return AddUIntUInt(value, ushortValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return AddUIntUInt(value, uintValue);
+        }
+
+        if (otherValue is ulong ulongValue)
+        {
+            return AddUIntUInt(value, ulongValue);
+        }
+
+        // Handle signed integer types
+        if (otherValue is sbyte sbyteValue)
+        {
+            if (sbyteValue < 0)
+            {
+                if (value < (ulong)Math.Abs(sbyteValue))
+                {
+                    throw new CelArgumentRangeException($"Cannot add negative sbyte value '{sbyteValue}' to uint64 '{value}' - would result in negative value.");
+                }
+                return value - (ulong)Math.Abs(sbyteValue);
+            }
+            return AddUIntUInt(value, (ulong)sbyteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            if (shortValue < 0)
+            {
+                if (value < (ulong)Math.Abs(shortValue))
+                {
+                    throw new CelArgumentRangeException($"Cannot add negative short value '{shortValue}' to uint64 '{value}' - would result in negative value.");
+                }
+                return value - (ulong)Math.Abs(shortValue);
+            }
+            return AddUIntUInt(value, (ulong)shortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            if (intValue < 0)
+            {
+                if (value < (ulong)Math.Abs((long)intValue))
+                {
+                    throw new CelArgumentRangeException($"Cannot add negative int value '{intValue}' to uint64 '{value}' - would result in negative value.");
+                }
+                return value - (ulong)Math.Abs((long)intValue);
+            }
+            return AddUIntUInt(value, (ulong)intValue);
+        }
+
+        if (otherValue is long longValue)
+        {
+            if (longValue < 0)
+            {
+                if (value < (ulong)Math.Abs(longValue))
+                {
+                    throw new CelArgumentRangeException($"Cannot add negative long value '{longValue}' to uint64 '{value}' - would result in negative value.");
+                }
+                return value - (ulong)Math.Abs(longValue);
+            }
+            return AddUIntUInt(value, (ulong)longValue);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists to ADD uint64 and type '{otherValue?.GetType().FullName ?? "null"}'.");
@@ -220,9 +313,65 @@ public static class UInt64Helpers
 
     public static ulong SubtractUInt(ulong value, object? otherValue)
     {
-        if (otherValue is ulong)
+        if (otherValue is byte byteValue)
         {
-            return SubtractUIntUInt(value, (ulong)otherValue);
+            return SubtractUIntUInt(value, byteValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return SubtractUIntUInt(value, ushortValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return SubtractUIntUInt(value, uintValue);
+        }
+
+        if (otherValue is ulong ulongValue)
+        {
+            return SubtractUIntUInt(value, ulongValue);
+        }
+
+        // Handle signed integer types
+        if (otherValue is sbyte sbyteValue)
+        {
+            if (sbyteValue < 0)
+            {
+                // Subtracting negative is like adding positive
+                return AddUIntUInt(value, (ulong)Math.Abs(sbyteValue));
+            }
+            return SubtractUIntUInt(value, (ulong)sbyteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            if (shortValue < 0)
+            {
+                // Subtracting negative is like adding positive
+                return AddUIntUInt(value, (ulong)Math.Abs(shortValue));
+            }
+            return SubtractUIntUInt(value, (ulong)shortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            if (intValue < 0)
+            {
+                // Subtracting negative is like adding positive
+                return AddUIntUInt(value, (ulong)Math.Abs((long)intValue));
+            }
+            return SubtractUIntUInt(value, (ulong)intValue);
+        }
+
+        if (otherValue is long longValue)
+        {
+            if (longValue < 0)
+            {
+                // Subtracting negative is like adding positive
+                return AddUIntUInt(value, (ulong)Math.Abs(longValue));
+            }
+            return SubtractUIntUInt(value, (ulong)longValue);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists to SUBTRACT uint64 and type '{otherValue?.GetType().FullName ?? "null"}'.");
@@ -239,9 +388,61 @@ public static class UInt64Helpers
 
     public static ulong MultiplyUInt(ulong value, object? otherValue)
     {
-        if (otherValue is ulong)
+        if (otherValue is byte byteValue)
         {
-            return MultiplyUIntUInt(value, (ulong)otherValue);
+            return MultiplyUIntUInt(value, byteValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return MultiplyUIntUInt(value, ushortValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return MultiplyUIntUInt(value, uintValue);
+        }
+
+        if (otherValue is ulong ulongValue)
+        {
+            return MultiplyUIntUInt(value, ulongValue);
+        }
+
+        // Handle signed integer types
+        if (otherValue is sbyte sbyteValue)
+        {
+            if (sbyteValue < 0)
+            {
+                throw new CelArgumentRangeException($"Cannot multiply uint64 by negative sbyte value '{sbyteValue}'.");
+            }
+            return MultiplyUIntUInt(value, (ulong)sbyteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            if (shortValue < 0)
+            {
+                throw new CelArgumentRangeException($"Cannot multiply uint64 by negative short value '{shortValue}'.");
+            }
+            return MultiplyUIntUInt(value, (ulong)shortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            if (intValue < 0)
+            {
+                throw new CelArgumentRangeException($"Cannot multiply uint64 by negative int value '{intValue}'.");
+            }
+            return MultiplyUIntUInt(value, (ulong)intValue);
+        }
+
+        if (otherValue is long longValue)
+        {
+            if (longValue < 0)
+            {
+                throw new CelArgumentRangeException($"Cannot multiply uint64 by negative long value '{longValue}'.");
+            }
+            return MultiplyUIntUInt(value, (ulong)longValue);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists to MULTIPLY uint64 and type '{otherValue?.GetType().FullName ?? "null"}'.");
@@ -258,9 +459,77 @@ public static class UInt64Helpers
 
     public static ulong DivideUInt(ulong value, object? otherValue)
     {
-        if (otherValue is ulong)
+        if (otherValue is byte byteValue)
         {
-            return DivideUIntUInt(value, (ulong)otherValue);
+            return DivideUIntUInt(value, byteValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return DivideUIntUInt(value, ushortValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return DivideUIntUInt(value, uintValue);
+        }
+
+        if (otherValue is ulong ulongValue)
+        {
+            return DivideUIntUInt(value, ulongValue);
+        }
+
+        // Handle signed integer types
+        if (otherValue is sbyte sbyteValue)
+        {
+            if (sbyteValue <= 0)
+            {
+                if (sbyteValue == 0)
+                {
+                    throw new CelDivideByZeroException("Cannot divide value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot divide uint64 by negative sbyte value '{sbyteValue}'.");
+            }
+            return DivideUIntUInt(value, (ulong)sbyteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            if (shortValue <= 0)
+            {
+                if (shortValue == 0)
+                {
+                    throw new CelDivideByZeroException("Cannot divide value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot divide uint64 by negative short value '{shortValue}'.");
+            }
+            return DivideUIntUInt(value, (ulong)shortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            if (intValue <= 0)
+            {
+                if (intValue == 0)
+                {
+                    throw new CelDivideByZeroException("Cannot divide value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot divide uint64 by negative int value '{intValue}'.");
+            }
+            return DivideUIntUInt(value, (ulong)intValue);
+        }
+
+        if (otherValue is long longValue)
+        {
+            if (longValue <= 0)
+            {
+                if (longValue == 0)
+                {
+                    throw new CelDivideByZeroException("Cannot divide value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot divide uint64 by negative long value '{longValue}'.");
+            }
+            return DivideUIntUInt(value, (ulong)longValue);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists to DIVIDE uint64 and type '{otherValue?.GetType().FullName ?? "null"}'.");
@@ -282,9 +551,77 @@ public static class UInt64Helpers
 
     public static ulong ModulusUInt(ulong value, object? otherValue)
     {
-        if (otherValue is ulong)
+        if (otherValue is byte byteValue)
         {
-            return ModulusUIntUInt(value, (ulong)otherValue);
+            return ModulusUIntUInt(value, byteValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return ModulusUIntUInt(value, ushortValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return ModulusUIntUInt(value, uintValue);
+        }
+
+        if (otherValue is ulong ulongValue)
+        {
+            return ModulusUIntUInt(value, ulongValue);
+        }
+
+        // Handle signed integer types
+        if (otherValue is sbyte sbyteValue)
+        {
+            if (sbyteValue <= 0)
+            {
+                if (sbyteValue == 0)
+                {
+                    throw new CelModulusByZeroException("Cannot calculate modulus of value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot calculate modulus of uint64 by negative sbyte value '{sbyteValue}'.");
+            }
+            return ModulusUIntUInt(value, (ulong)sbyteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            if (shortValue <= 0)
+            {
+                if (shortValue == 0)
+                {
+                    throw new CelModulusByZeroException("Cannot calculate modulus of value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot calculate modulus of uint64 by negative short value '{shortValue}'.");
+            }
+            return ModulusUIntUInt(value, (ulong)shortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            if (intValue <= 0)
+            {
+                if (intValue == 0)
+                {
+                    throw new CelModulusByZeroException("Cannot calculate modulus of value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot calculate modulus of uint64 by negative int value '{intValue}'.");
+            }
+            return ModulusUIntUInt(value, (ulong)intValue);
+        }
+
+        if (otherValue is long longValue)
+        {
+            if (longValue <= 0)
+            {
+                if (longValue == 0)
+                {
+                    throw new CelModulusByZeroException("Cannot calculate modulus of value by zero.");
+                }
+                throw new CelArgumentRangeException($"Cannot calculate modulus of uint64 by negative long value '{longValue}'.");
+            }
+            return ModulusUIntUInt(value, (ulong)longValue);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists to MODULUS uint64 and type '{otherValue?.GetType().FullName ?? "null"}'.");
