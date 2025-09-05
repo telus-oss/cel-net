@@ -129,14 +129,29 @@ public static class Int64Helpers
             return byteValue;
         }
 
+        if (value is sbyte sbyteValue)
+        {
+            return sbyteValue;
+        }
+
         if (value is short shortValue)
         {
             return shortValue;
         }
 
+        if (value is ushort ushortValue)
+        {
+            return ushortValue;
+        }
+
         if (value is int intValue)
         {
             return intValue;
+        }
+
+        if (value is uint uintValue)
+        {
+            return (long)uintValue;
         }
 
         if (value is long longValue)
@@ -325,9 +340,34 @@ public static class Int64Helpers
             return AddIntInt(value, otherValueEnumValueDescriptor.Number);
         }
 
+        if (otherValue is sbyte sbyteValue)
+        {
+            return AddIntInt(value, sbyteValue);
+        }
+
+        if (otherValue is byte byteValue)
+        {
+            return AddIntInt(value, byteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            return AddIntInt(value, shortValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return AddIntInt(value, ushortValue);
+        }
+
         if (otherValue is int otherValueInt32)
         {
             return AddIntInt(value, otherValueInt32);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return AddIntInt(value, (long)uintValue);
         }
 
         if (otherValue is long otherValueLong)
@@ -349,9 +389,34 @@ public static class Int64Helpers
 
     public static long SubtractInt(long value, object? otherValue)
     {
+        if (otherValue is sbyte sbyteValue)
+        {
+            return SubtractIntInt(value, sbyteValue);
+        }
+
+        if (otherValue is byte byteValue)
+        {
+            return SubtractIntInt(value, byteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            return SubtractIntInt(value, shortValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return SubtractIntInt(value, ushortValue);
+        }
+
         if (otherValue is int otherValueInt32)
         {
             return SubtractIntInt(value, otherValueInt32);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return SubtractIntInt(value, (long)uintValue);
         }
 
         if (otherValue is long)
@@ -373,6 +438,36 @@ public static class Int64Helpers
 
     public static long MultiplyInt(long value, object? otherValue)
     {
+        if (otherValue is sbyte sbyteValue)
+        {
+            return MultiplyIntInt(value, sbyteValue);
+        }
+
+        if (otherValue is byte byteValue)
+        {
+            return MultiplyIntInt(value, byteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            return MultiplyIntInt(value, shortValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return MultiplyIntInt(value, ushortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            return MultiplyIntInt(value, intValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return MultiplyIntInt(value, (long)uintValue);
+        }
+
         if (otherValue is long)
         {
             return MultiplyIntInt(value, (long)otherValue);
@@ -392,6 +487,36 @@ public static class Int64Helpers
 
     public static long DivideInt(long value, object? otherValue)
     {
+        if (otherValue is sbyte sbyteValue)
+        {
+            return DivideIntInt(value, sbyteValue);
+        }
+
+        if (otherValue is byte byteValue)
+        {
+            return DivideIntInt(value, byteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            return DivideIntInt(value, shortValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return DivideIntInt(value, ushortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            return DivideIntInt(value, intValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return DivideIntInt(value, (long)uintValue);
+        }
+
         if (otherValue is long)
         {
             return DivideIntInt(value, (long)otherValue);
@@ -416,6 +541,36 @@ public static class Int64Helpers
 
     public static long ModulusInt(long value, object? otherValue)
     {
+        if (otherValue is sbyte sbyteValue)
+        {
+            return ModulusIntInt(value, sbyteValue);
+        }
+
+        if (otherValue is byte byteValue)
+        {
+            return ModulusIntInt(value, byteValue);
+        }
+
+        if (otherValue is short shortValue)
+        {
+            return ModulusIntInt(value, shortValue);
+        }
+
+        if (otherValue is ushort ushortValue)
+        {
+            return ModulusIntInt(value, ushortValue);
+        }
+
+        if (otherValue is int intValue)
+        {
+            return ModulusIntInt(value, intValue);
+        }
+
+        if (otherValue is uint uintValue)
+        {
+            return ModulusIntInt(value, (long)uintValue);
+        }
+
         if (otherValue is long)
         {
             return ModulusIntInt(value, (long)otherValue);

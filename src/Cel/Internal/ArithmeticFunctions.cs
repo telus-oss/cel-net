@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Collections;
 using Cel.Helpers;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
@@ -40,7 +41,7 @@ public static class ArithmeticFunctions
             {
                 return DecimalHelpers.AddDecimal(decimalValue, otherValue);
             }
-            
+
             if (value is long longValue)
             {
                 return Int64Helpers.AddInt(longValue, otherValue);
@@ -49,6 +50,35 @@ public static class ArithmeticFunctions
             if (value is ulong ulongValue)
             {
                 return UInt64Helpers.AddUInt(ulongValue, otherValue);
+            }
+            if (value is int intValue)
+            {
+                return Int64Helpers.AddInt(intValue, otherValue);
+            }
+
+            if (value is uint uintValue)
+            {
+                return UInt64Helpers.AddUInt(uintValue, otherValue);
+            }
+
+            if (value is short shortValue)
+            {
+                return Int64Helpers.AddInt(shortValue, otherValue);
+            }
+
+            if (value is ushort ushortValue)
+            {
+                return UInt64Helpers.AddUInt(ushortValue, otherValue);
+            }
+
+            if (value is byte byteValue)
+            {
+                return UInt64Helpers.AddUInt(byteValue, otherValue);
+            }
+
+            if (value is sbyte sbyteValue)
+            {
+                return Int64Helpers.AddInt(sbyteValue, otherValue);
             }
 
             if (value is DateTimeOffset dateTimeOffsetValue)
@@ -79,6 +109,11 @@ public static class ArithmeticFunctions
             if (value is object[] objectArrayValue)
             {
                 return ListHelpers.AddList(objectArrayValue, otherValue);
+            }
+
+            if (value is IList objectArrayList)
+            {
+                return ListHelpers.AddList(objectArrayList, otherValue);
             }
 
             if (value is string stringValue)
@@ -135,6 +170,35 @@ public static class ArithmeticFunctions
             if (value is ulong ulongValue)
             {
                 return UInt64Helpers.SubtractUInt(ulongValue, otherValue);
+            }
+
+            if (value is int intValue)
+            {
+                return Int64Helpers.SubtractInt(intValue, otherValue);
+            }
+
+            if (value is uint uintValue)
+            {
+                return UInt64Helpers.SubtractUInt(uintValue, otherValue);
+            }
+            if (value is short shortValue)
+            {
+                return Int64Helpers.SubtractInt(shortValue, otherValue);
+            }
+
+            if (value is ushort ushortValue)
+            {
+                return UInt64Helpers.SubtractUInt(ushortValue, otherValue);
+            }
+
+            if (value is byte byteValue)
+            {
+                return UInt64Helpers.SubtractUInt(byteValue, otherValue);
+            }
+
+            if (value is sbyte sbyteValue)
+            {
+                return Int64Helpers.SubtractInt(sbyteValue, otherValue);
             }
 
             if (value is TimeSpan timeSpanValue)
@@ -198,6 +262,36 @@ public static class ArithmeticFunctions
             {
                 return UInt64Helpers.MultiplyUInt(ulongValue, otherValue);
             }
+
+            if (value is int intValue)
+            {
+                return Int64Helpers.MultiplyInt(intValue, otherValue);
+            }
+
+            if (value is uint uintValue)
+            {
+                return UInt64Helpers.MultiplyUInt(uintValue, otherValue);
+            }
+
+            if (value is short shortValue)
+            {
+                return Int64Helpers.MultiplyInt(shortValue, otherValue);
+            }
+
+            if (value is ushort ushortValue)
+            {
+                return UInt64Helpers.MultiplyUInt(ushortValue, otherValue);
+            }
+
+            if (value is byte byteValue)
+            {
+                return UInt64Helpers.MultiplyUInt(byteValue, otherValue);
+            }
+
+            if (value is sbyte sbyteValue)
+            {
+                return Int64Helpers.MultiplyInt(sbyteValue, otherValue);
+            }
         }
         catch (OverflowException x)
         {
@@ -239,6 +333,36 @@ public static class ArithmeticFunctions
             {
                 return UInt64Helpers.DivideUInt(ulongValue, otherValue);
             }
+
+            if (value is int intValue)
+            {
+                return Int64Helpers.DivideInt(intValue, otherValue);
+            }
+
+            if (value is uint uintValue)
+            {
+                return UInt64Helpers.DivideUInt(uintValue, otherValue);
+            }
+
+            if (value is short shortValue)
+            {
+                return Int64Helpers.DivideInt(shortValue, otherValue);
+            }
+
+            if (value is ushort ushortValue)
+            {
+                return UInt64Helpers.DivideUInt(ushortValue, otherValue);
+            }
+
+            if (value is byte byteValue)
+            {
+                return UInt64Helpers.DivideUInt(byteValue, otherValue);
+            }
+
+            if (value is sbyte sbyteValue)
+            {
+                return Int64Helpers.DivideInt(sbyteValue, otherValue);
+            }
         }
         catch (OverflowException x)
         {
@@ -271,7 +395,7 @@ public static class ArithmeticFunctions
             {
                 return DecimalHelpers.ModulusDecimal(decimalValue, otherValue);
             }
-            
+
             if (value is int intValue)
             {
                 return Int64Helpers.ModulusInt(intValue, otherValue);
@@ -285,6 +409,31 @@ public static class ArithmeticFunctions
             if (value is ulong ulongValue)
             {
                 return UInt64Helpers.ModulusUInt(ulongValue, otherValue);
+            }
+
+            if (value is uint uintValue)
+            {
+                return UInt64Helpers.ModulusUInt(uintValue, otherValue);
+            }
+
+            if (value is short shortValue)
+            {
+                return Int64Helpers.ModulusInt(shortValue, otherValue);
+            }
+
+            if (value is ushort ushortValue)
+            {
+                return UInt64Helpers.ModulusUInt(ushortValue, otherValue);
+            }
+
+            if (value is byte byteValue)
+            {
+                return UInt64Helpers.ModulusUInt(byteValue, otherValue);
+            }
+
+            if (value is sbyte sbyteValue)
+            {
+                return Int64Helpers.ModulusInt(sbyteValue, otherValue);
             }
         }
         catch (OverflowException x)
@@ -340,6 +489,36 @@ public static class ArithmeticFunctions
         if (value is ulong ulongValue)
         {
             return UInt64Helpers.NegateUInt(ulongValue);
+        }
+
+        if (value is int intValue)
+        {
+            return Int64Helpers.NegateInt(intValue);
+        }
+
+        if (value is uint uintValue)
+        {
+            return UInt64Helpers.NegateUInt(uintValue);
+        }
+
+        if (value is short shortValue)
+        {
+            return Int64Helpers.NegateInt(shortValue);
+        }
+
+        if (value is ushort ushortValue)
+        {
+            return UInt64Helpers.NegateUInt(ushortValue);
+        }
+
+        if (value is byte byteValue)
+        {
+            return UInt64Helpers.NegateUInt(byteValue);
+        }
+
+        if (value is sbyte sbyteValue)
+        {
+            return Int64Helpers.NegateInt(sbyteValue);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists to NEGATE type '{value?.GetType().FullName ?? "null"}'.");

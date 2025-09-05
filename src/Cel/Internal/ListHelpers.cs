@@ -58,21 +58,39 @@ public static class ListHelpers
 
     public static object? AddList(Array value, object? otherValue)
     {
-        if (otherValue is Array)
+        if (otherValue is IList)
         {
-            return AddListList(value, (Array)otherValue);
+            return AddListList(value, (IList)otherValue);
         }
-
 
         throw new CelNoSuchOverloadException($"No overload exists to ADD list and type '{otherValue?.GetType().FullName ?? "null"}'.");
     }
-
-    public static object?[] AddListList(Array a, Array b)
+    public static object? AddList(IList value, object? otherValue)
     {
-        var newArray = new object?[a.Length + b.Length];
+        if (otherValue is IList)
+        {
+            return AddListList(value, (IList)otherValue);
+        }
+
+        throw new CelNoSuchOverloadException($"No overload exists to ADD list and type '{otherValue?.GetType().FullName ?? "null"}'.");
+    }
+    public static object?[] AddListList(Array a, IList b)
+    {
+        var newArray = new object?[a!.Length + b!.Count];
         Array.ConstrainedCopy(a, 0, newArray, 0, a.Length);
-        Array.ConstrainedCopy(b, 0, newArray, a.Length, b.Length);
+        for (int i = 0; i < b.Count; i++)
+        {
+            newArray[a.Length + i] = b[i];
+        }
+
         return newArray;
+    }
+    public static List<object> AddListList(IList a, IList b)
+    { 
+        var list = new List<object>(a.Count + b.Count);
+        list.AddRange(a.Cast<object>());
+        list.AddRange(b.Cast<object>());
+        return list;
     }
 
     #endregion

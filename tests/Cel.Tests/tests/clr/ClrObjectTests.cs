@@ -62,6 +62,9 @@ public class ClrObjectTests
         return StringTestCases.TestCases()
             .Union(Int32TestCases.TestCases())
             .Union(DecimalTestCases.TestCases())
+            .Union(SignedIntegerArithmeticTestCases.TestCases())
+            .Union(UnsignedIntegerArithmeticTestCases.TestCases())
+            .Union(IntegerEdgeCaseTestCases.TestCases())
             .ToList();
     }
 
