@@ -32,6 +32,11 @@ public static class DoubleHelpers
             return CompareDoubleFloat(value, (float)otherValue);
         }
 
+        if (otherValue is decimal)
+        {
+            return CompareDoubleDouble(value, (decimal)otherValue);
+        }
+
         if (otherValue is long)
         {
             return CompareDoubleInt(value, (long)otherValue);
@@ -42,7 +47,37 @@ public static class DoubleHelpers
             return CompareDoubleUInt(value, (ulong)otherValue);
         }
 
-        throw new CelNoSuchOverloadException($"No overload exists to compare double to type '{value.GetType().FullName ?? "null"}'.");
+        if (otherValue is int)
+        {
+            return CompareDoubleInt(value, (long)(int)otherValue);
+        }
+
+        if (otherValue is uint)
+        {
+            return CompareDoubleUInt(value, (ulong)(uint)otherValue);
+        }
+
+        if (otherValue is short)
+        {
+            return CompareDoubleInt(value, (long)(short)otherValue);
+        }
+
+        if (otherValue is ushort)
+        {
+            return CompareDoubleUInt(value, (ulong)(ushort)otherValue);
+        }
+
+        if (otherValue is byte)
+        {
+            return CompareDoubleUInt(value, (ulong)(byte)otherValue);
+        }
+
+        if (otherValue is sbyte)
+        {
+            return CompareDoubleInt(value, (long)(sbyte)otherValue);
+        }
+
+        throw new CelNoSuchOverloadException($"No overload exists to compare double to type '{otherValue?.GetType().FullName ?? "null"}'.");
     }
 
     public static int CompareDoubleDouble(double a, double b)
@@ -147,6 +182,11 @@ public static class DoubleHelpers
             return doubleValue;
         }
 
+        if (value is float floatValue)
+        {
+            return ConvertDoubleFloat(floatValue);
+        }
+
         if (value is long intValue)
         {
             return ConvertDoubleInt(intValue);
@@ -157,12 +197,57 @@ public static class DoubleHelpers
             return ConvertDoubleUInt(uintValue);
         }
 
+        if (value is int int32Value)
+        {
+            return ConvertDoubleInt(int32Value);
+        }
+
+        if (value is uint uint32Value)
+        {
+            return ConvertDoubleUInt(uint32Value);
+        }
+
+        if (value is short int16Value)
+        {
+            return ConvertDoubleInt(int16Value);
+        }
+
+        if (value is ushort uint16Value)
+        {
+            return ConvertDoubleUInt(uint16Value);
+        }
+
+        if (value is byte byteValue)
+        {
+            return ConvertDoubleUInt(byteValue);
+        }
+
+        if (value is sbyte sbyteValue)
+        {
+            return ConvertDoubleInt(sbyteValue);
+        }
+
+        if (value is decimal decimalValue)
+        {
+            return ConvertDoubleDecimal(decimalValue);
+        }
+
         if (value is string strValue)
         {
             return ConvertDoubleString(strValue);
         }
 
         throw new CelNoSuchOverloadException($"No overload exists to convert type '{value.GetType().FullName ?? "null"}' to double.");
+    }
+
+    public static double ConvertDoubleFloat(float value)
+    {
+        return value;
+    }
+
+    public static double ConvertDoubleDecimal(decimal value)
+    {
+        return (double)value;
     }
 
     public static double ConvertDoubleInt(long value)
@@ -196,6 +281,11 @@ public static class DoubleHelpers
             return AddDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is float)
+        {
+            return AddDoubleFloat(value, (float)otherValue);
+        }
+
         if (otherValue is decimal)
         {
             return AddDoubleDecimal(value, (decimal)otherValue);
@@ -211,11 +301,44 @@ public static class DoubleHelpers
             return AddDoubleUInt(value, (ulong)otherValue);
         }
 
+        if (otherValue is int)
+        {
+            return AddDoubleInt(value, (long)(int)otherValue);
+        }
+
+        if (otherValue is uint)
+        {
+            return AddDoubleUInt(value, (ulong)(uint)otherValue);
+        }
+
+        if (otherValue is short)
+        {
+            return AddDoubleInt(value, (long)(short)otherValue);
+        }
+
+        if (otherValue is ushort)
+        {
+            return AddDoubleUInt(value, (ulong)(ushort)otherValue);
+        }
+
+        if (otherValue is byte)
+        {
+            return AddDoubleUInt(value, (ulong)(byte)otherValue);
+        }
+
+        if (otherValue is sbyte)
+        {
+            return AddDoubleInt(value, (long)(sbyte)otherValue);
+        }
 
         throw new CelNoSuchOverloadException($"No overload exists to ADD double and type '{otherValue?.GetType().FullName ?? "null"}'.");
     }
 
     public static double AddDoubleDouble(double a, double b)
+    {
+        return a + b;
+    }
+    public static double AddDoubleFloat(double a, float b)
     {
         return a + b;
     }
@@ -244,6 +367,11 @@ public static class DoubleHelpers
             return SubtractDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is float)
+        {
+            return SubtractDoubleFloat(value, (float)otherValue);
+        }
+
         if (otherValue is decimal)
         {
             return SubtractDoubleDecimal(value, (decimal)otherValue);
@@ -259,11 +387,45 @@ public static class DoubleHelpers
             return SubtractDoubleUInt(value, (ulong)otherValue);
         }
 
+        if (otherValue is int)
+        {
+            return SubtractDoubleInt(value, (long)(int)otherValue);
+        }
+
+        if (otherValue is uint)
+        {
+            return SubtractDoubleUInt(value, (ulong)(uint)otherValue);
+        }
+
+        if (otherValue is short)
+        {
+            return SubtractDoubleInt(value, (long)(short)otherValue);
+        }
+
+        if (otherValue is ushort)
+        {
+            return SubtractDoubleUInt(value, (ulong)(ushort)otherValue);
+        }
+
+        if (otherValue is byte)
+        {
+            return SubtractDoubleUInt(value, (ulong)(byte)otherValue);
+        }
+
+        if (otherValue is sbyte)
+        {
+            return SubtractDoubleInt(value, (long)(sbyte)otherValue);
+        }
 
         throw new CelNoSuchOverloadException($"No overload exists to SUBTRACT double and type '{otherValue?.GetType().FullName ?? "null"}'.");
     }
 
     public static double SubtractDoubleDouble(double a, double b)
+    {
+        return a - b;
+    }
+
+    public static double SubtractDoubleFloat(double a, float b)
     {
         return a - b;
     }
@@ -294,6 +456,11 @@ public static class DoubleHelpers
             return MultiplyDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is float)
+        {
+            return MultiplyDoubleFloat(value, (float)otherValue);
+        }
+
         if (otherValue is decimal)
         {
             return MultiplyDoubleDecimal(value, (decimal)otherValue);
@@ -309,6 +476,35 @@ public static class DoubleHelpers
             return MultiplyDoubleUInt(value, (ulong)otherValue);
         }
 
+        if (otherValue is int)
+        {
+            return MultiplyDoubleInt(value, (long)(int)otherValue);
+        }
+
+        if (otherValue is uint)
+        {
+            return MultiplyDoubleUInt(value, (ulong)(uint)otherValue);
+        }
+
+        if (otherValue is short)
+        {
+            return MultiplyDoubleInt(value, (long)(short)otherValue);
+        }
+
+        if (otherValue is ushort)
+        {
+            return MultiplyDoubleUInt(value, (ulong)(ushort)otherValue);
+        }
+
+        if (otherValue is byte)
+        {
+            return MultiplyDoubleUInt(value, (ulong)(byte)otherValue);
+        }
+
+        if (otherValue is sbyte)
+        {
+            return MultiplyDoubleInt(value, (long)(sbyte)otherValue);
+        }
 
         throw new CelNoSuchOverloadException($"No overload exists to MULTIPLY double and type '{otherValue?.GetType().FullName ?? "null"}'.");
     }
@@ -317,6 +513,11 @@ public static class DoubleHelpers
     {
         return a * b;
     }
+    public static double MultiplyDoubleFloat(double a, float b)
+    {
+        return a * b;
+    }
+
     public static double MultiplyDoubleDecimal(double a, decimal b)
     {
         return a * (double)b;
@@ -343,6 +544,11 @@ public static class DoubleHelpers
             return DivideDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is float)
+        {
+            return DivideDoubleFloat(value, (float)otherValue);
+        }
+
         if (otherValue is decimal)
         {
             return DivideDoubleDecimal(value, (decimal)otherValue);
@@ -358,11 +564,49 @@ public static class DoubleHelpers
             return DivideDoubleUInt(value, (ulong)otherValue);
         }
 
+        if (otherValue is int)
+        {
+            return DivideDoubleInt(value, (long)(int)otherValue);
+        }
+
+        if (otherValue is uint)
+        {
+            return DivideDoubleUInt(value, (ulong)(uint)otherValue);
+        }
+
+        if (otherValue is short)
+        {
+            return DivideDoubleInt(value, (long)(short)otherValue);
+        }
+
+        if (otherValue is ushort)
+        {
+            return DivideDoubleUInt(value, (ulong)(ushort)otherValue);
+        }
+
+        if (otherValue is byte)
+        {
+            return DivideDoubleUInt(value, (ulong)(byte)otherValue);
+        }
+
+        if (otherValue is sbyte)
+        {
+            return DivideDoubleInt(value, (long)(sbyte)otherValue);
+        }
 
         throw new CelNoSuchOverloadException($"No overload exists to DIVIDE double and type '{otherValue?.GetType().FullName ?? "null"}'.");
     }
 
     public static double DivideDoubleDouble(double a, double b)
+    {
+        if (b == 0)
+        {
+            return double.NaN;
+        }
+
+        return a / b;
+    }
+    public static double DivideDoubleFloat(double a, float b)
     {
         if (b == 0)
         {
@@ -411,6 +655,11 @@ public static class DoubleHelpers
             return ModulusDoubleDouble(value, (double)otherValue);
         }
 
+        if (otherValue is float)
+        {
+            return ModulusDoubleFloat(value, (float)otherValue);
+        }
+
         if (otherValue is decimal)
         {
             return ModulusDoubleDecimal(value, (decimal)otherValue);
@@ -426,6 +675,35 @@ public static class DoubleHelpers
             return ModulusDoubleUInt(value, (ulong)otherValue);
         }
 
+        if (otherValue is int)
+        {
+            return ModulusDoubleInt(value, (long)(int)otherValue);
+        }
+
+        if (otherValue is uint)
+        {
+            return ModulusDoubleUInt(value, (ulong)(uint)otherValue);
+        }
+
+        if (otherValue is short)
+        {
+            return ModulusDoubleInt(value, (long)(short)otherValue);
+        }
+
+        if (otherValue is ushort)
+        {
+            return ModulusDoubleUInt(value, (ulong)(ushort)otherValue);
+        }
+
+        if (otherValue is byte)
+        {
+            return ModulusDoubleUInt(value, (ulong)(byte)otherValue);
+        }
+
+        if (otherValue is sbyte)
+        {
+            return ModulusDoubleInt(value, (long)(sbyte)otherValue);
+        }
 
         throw new CelNoSuchOverloadException($"No overload exists to MODULUS double and type '{otherValue?.GetType().FullName ?? "null"}'.");
     }
@@ -433,6 +711,11 @@ public static class DoubleHelpers
     public static double ModulusDoubleDouble(double a, double b)
     {
         throw new CelNoSuchOverloadException("No overload exists to MODULUS double and double.");
+    }
+
+    public static double ModulusDoubleFloat(double a, float b)
+    {
+        throw new CelNoSuchOverloadException("No overload exists to MODULUS double and float.");
     }
 
     public static double ModulusDoubleDecimal(double a, decimal b)

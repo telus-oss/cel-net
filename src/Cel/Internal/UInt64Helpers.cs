@@ -135,11 +135,21 @@ public static class UInt64Helpers
             return ConvertUIntDouble(doubleValue);
         }
 
+        if (value is float floatValue)
+        {
+            return ConvertUIntFloat(floatValue);
+        }
+
+        if (value is decimal decimalValue)
+        {
+            return ConvertUIntDecimal(decimalValue);
+        }
+
         if (value is string strValue)
         {
             return ConvertUIntString(strValue);
         }
-
+       
         throw new CelNoSuchOverloadException($"No overload exists to convert type '{value?.GetType().FullName ?? "null"}' to uint64.");
     }
 
@@ -152,7 +162,7 @@ public static class UInt64Helpers
 
         return (ulong)intValue;
     }
-
+ 
     private static ulong ConvertUIntDouble(double value)
     {
         try
@@ -178,6 +188,62 @@ public static class UInt64Helpers
         catch (Exception)
         {
             throw new CelArgumentRangeException($"Could not convert double '{value}' to uint.");
+        }
+    }
+
+    private static ulong ConvertUIntFloat(float value)
+    {
+        try
+        {
+            if (value < ulong.MinValue)
+            {
+                throw new CelArgumentRangeException($"Could not convert float '{value}' to uint.");
+            }
+
+            if (value > ulong.MaxValue)
+            {
+                throw new CelArgumentRangeException($"Could not convert float '{value}' to uint.");
+            }
+
+            value = (float)Math.Truncate(value);
+
+            return Convert.ToUInt64(value);
+        }
+        catch (CelArgumentRangeException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw new CelArgumentRangeException($"Could not convert float '{value}' to uint.");
+        }
+    }
+
+    private static ulong ConvertUIntDecimal(decimal value)
+    {
+        try
+        {
+            if (value < ulong.MinValue)
+            {
+                throw new CelArgumentRangeException($"Could not convert decimal '{value}' to uint.");
+            }
+
+            if (value > ulong.MaxValue)
+            {
+                throw new CelArgumentRangeException($"Could not convert decimal '{value}' to uint.");
+            }
+
+            value = Math.Truncate(value);
+
+            return Convert.ToUInt64(value);
+        }
+        catch (CelArgumentRangeException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw new CelArgumentRangeException($"Could not convert decimal '{value}' to uint.");
         }
     }
 

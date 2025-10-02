@@ -37,6 +37,11 @@ public static class ArithmeticFunctions
                 return DoubleHelpers.AddDouble(doubleValue, otherValue);
             }
 
+            if (value is float floatValue)
+            {
+                return DoubleHelpers.AddDouble(floatValue, otherValue);
+            }
+
             if (value is decimal decimalValue)
             {
                 return DecimalHelpers.AddDecimal(decimalValue, otherValue);
@@ -157,6 +162,11 @@ public static class ArithmeticFunctions
                 return DoubleHelpers.SubtractDouble(doubleValue, otherValue);
             }
 
+            if (value is float floatValue)
+            {
+                return DoubleHelpers.SubtractDouble(floatValue, otherValue);
+            }
+
             if (value is decimal decimalValue)
             {
                 return DecimalHelpers.SubtractDecimal(decimalValue, otherValue);
@@ -248,6 +258,11 @@ public static class ArithmeticFunctions
                 return DoubleHelpers.MultiplyDouble(doubleValue, otherValue);
             }
 
+            if (value is float floatValue)
+            {
+                return DoubleHelpers.MultiplyDouble(floatValue, otherValue);
+            }
+
             if (value is decimal decimalValue)
             {
                 return DecimalHelpers.MultiplyDecimal(decimalValue, otherValue);
@@ -317,6 +332,11 @@ public static class ArithmeticFunctions
             if (value is double doubleValue)
             {
                 return DoubleHelpers.DivideDouble(doubleValue, otherValue);
+            }
+
+            if (value is float floatValue)
+            {
+                return DoubleHelpers.DivideDouble(floatValue, otherValue);
             }
 
             if (value is decimal decimalValue)
@@ -389,6 +409,11 @@ public static class ArithmeticFunctions
             if (value is double doubleValue)
             {
                 return DoubleHelpers.ModulusDouble(doubleValue, otherValue);
+            }
+
+            if (value is float floatValue)
+            {
+                return DoubleHelpers.ModulusDouble(floatValue, otherValue);
             }
 
             if (value is decimal decimalValue)
@@ -474,6 +499,11 @@ public static class ArithmeticFunctions
         if (value is double doubleValue)
         {
             return DoubleHelpers.NegateDouble(doubleValue);
+        }
+
+        if (value is float floatValue)
+        {
+            return DoubleHelpers.NegateDouble(floatValue);
         }
 
         if (value is decimal decimalValue)

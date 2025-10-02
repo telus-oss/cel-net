@@ -42,7 +42,8 @@ public static class CelFunctions
         functions.RegisterFunction("double", new[] { typeof(float) }, ConvertDouble);
         functions.RegisterFunction("double", new[] { typeof(double) }, ConvertDouble);
         functions.RegisterFunction("double", new[] { typeof(string) }, ConvertDouble);
-        
+        functions.RegisterFunction("double", new[] { typeof(decimal) }, ConvertDouble);
+
         functions.RegisterFunction("decimal", new[] { typeof(byte) }, ConvertDecimal);
         functions.RegisterFunction("decimal", new[] { typeof(short) }, ConvertDecimal);
         functions.RegisterFunction("decimal", new[] { typeof(ushort) }, ConvertDecimal);
@@ -62,12 +63,14 @@ public static class CelFunctions
         functions.RegisterFunction("int", new[] { typeof(long) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(ulong) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(double) }, ConvertInt);
+        functions.RegisterFunction("int", new[] { typeof(float) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(decimal) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(string) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(Enum) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(EnumValueDescriptor) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(DateTimeOffset) }, ConvertInt);
         functions.RegisterFunction("int", new[] { typeof(DateTime) }, ConvertInt);
+        functions.RegisterFunction("int", new[] { typeof(Timestamp) }, ConvertInt);
 
         functions.RegisterFunction("uint", new[] { typeof(byte) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(short) }, ConvertUInt);
@@ -80,7 +83,7 @@ public static class CelFunctions
         functions.RegisterFunction("uint", new[] { typeof(double) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(float) }, ConvertUInt);
         functions.RegisterFunction("uint", new[] { typeof(string) }, ConvertUInt);
-
+       
         functions.RegisterFunction("string", new[] { typeof(string) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(bool) }, ConvertString);
         functions.RegisterFunction("string", new[] { typeof(ByteString) }, ConvertString);
@@ -96,6 +99,7 @@ public static class CelFunctions
         functions.RegisterFunction("string", new[] { typeof(Duration) }, ConvertString);
 
         functions.RegisterFunction("timestamp", new[] { typeof(string) }, ConvertTimestamp);
+        functions.RegisterFunction("timestamp", new[] { typeof(int) }, ConvertTimestamp);
         functions.RegisterFunction("timestamp", new[] { typeof(long) }, ConvertTimestamp);
         functions.RegisterFunction("timestamp", new[] { typeof(Timestamp) }, ConvertTimestamp);
         functions.RegisterFunction("timestamp", new[] { typeof(DateTimeOffset) }, ConvertTimestamp);
@@ -296,6 +300,11 @@ public static class CelFunctions
             return TimestampHelpers.ConvertTimestampInt(longValue);
         }
 
+        if (arg is int intValue)
+        {
+            return TimestampHelpers.ConvertTimestampInt(intValue);
+        }
+        
         if (arg is Timestamp timestampValue)
         {
             return timestampValue;

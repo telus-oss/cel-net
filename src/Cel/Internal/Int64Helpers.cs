@@ -14,6 +14,8 @@
 
 using System.Globalization;
 using Google.Protobuf.Reflection;
+using Google.Protobuf.WellKnownTypes;
+using Enum = System.Enum;
 
 namespace Cel.Helpers;
 
@@ -31,6 +33,11 @@ public static class Int64Helpers
         if (otherValue is double)
         {
             return CompareIntDouble(value, (double)otherValue);
+        }
+
+        if (otherValue is float)
+        {
+            return CompareIntDouble(value, (double)(float)otherValue);
         }
 
         if (otherValue is decimal)
@@ -51,6 +58,26 @@ public static class Int64Helpers
         if (otherValue is short)
         {
             return CompareIntInt(value, (short)otherValue);
+        }
+
+        if (otherValue is byte)
+        {
+            return CompareIntInt(value, (long)(byte)otherValue);
+        }
+
+        if (otherValue is sbyte)
+        {
+            return CompareIntInt(value, (long)(sbyte)otherValue);
+        }
+
+        if (otherValue is uint)
+        {
+            return CompareIntInt(value, (long)(uint)otherValue);
+        }
+
+        if (otherValue is ushort)
+        {
+            return CompareIntInt(value, (long)(ushort)otherValue);
         }
 
         if (otherValue is ulong)
@@ -121,7 +148,7 @@ public static class Int64Helpers
     {
         if (value == null)
         {
-            throw new CelNoSuchOverloadException($"No overload exists to convert type '{value?.GetType().FullName ?? "null"}' to double.");
+            throw new CelNoSuchOverloadException($"No overload exists to convert type '{value?.GetType().FullName ?? "null"}' to int64.");
         }
 
         if (value is byte byteValue)
@@ -169,6 +196,11 @@ public static class Int64Helpers
             return ConvertIntDouble(doubleValue);
         }
 
+        if (value is float floatValue)
+        {
+            return ConvertIntFloat(floatValue);
+        }
+
         if (value is decimal decimalValue)
         {
             return ConvertIntDecimal(decimalValue);
@@ -198,13 +230,22 @@ public static class Int64Helpers
         {
             return ConvertIntTimestamp(dateTimeValue);
         }
-
+        if (value is Timestamp dateTimeTimestamp)
+        {
+            var dateTimeOffset = dateTimeTimestamp.ToDateTimeOffset();
+            return ConvertIntTimestamp(dateTimeOffset);
+        }
         throw new CelNoSuchOverloadException($"No overload exists to convert type '{value.GetType().FullName ?? "null"}' to int64.");
     }
 
     public static long ConvertIntTimestamp(DateTimeOffset dateTimeOffsetValue)
     {
         return dateTimeOffsetValue.ToUnixTimeSeconds();
+    }
+
+    public static long ConvertIntTimestamp(DateTime dateTimeValue)
+    {
+        return new DateTimeOffset(dateTimeValue).ToUnixTimeSeconds();
     }
 
     public static long ConvertIntUInt(ulong uintValue)
@@ -267,6 +308,37 @@ public static class Int64Helpers
             }
 
             value = Math.Truncate(value);
+
+            return Convert.ToInt64(value);
+        }
+        catch (CelArgumentRangeException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            throw new CelArgumentRangeException($"Could not convert '{value}' to Int.");
+        }
+    }
+    public static long ConvertIntFloat(float value)
+    {
+        try
+        {
+            if (value <= long.MinValue)
+            {
+                //from the spec
+                //Float to int conversions are limited to (minInt, maxInt) non-inclusive.
+                throw new CelArgumentRangeException($"Could not convert '{value}' to Int.");
+            }
+
+            if (value >= long.MaxValue)
+            {
+                //from the spec
+                //Float to int conversions are limited to (minInt, maxInt) non-inclusive.
+                throw new CelArgumentRangeException($"Could not convert '{value}' to Int.");
+            }
+
+            value = (float)Math.Truncate(value);
 
             return Convert.ToInt64(value);
         }

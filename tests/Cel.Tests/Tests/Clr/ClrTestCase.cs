@@ -1,6 +1,6 @@
 ﻿using Cel.Expr;
 
-namespace Cel.Tests;
+namespace Cel.Tests.Clr;
 
 public class ClrTestCase
 {
