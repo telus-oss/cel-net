@@ -1,10 +1,10 @@
 ﻿using Cel.Expr;
-using Cel.Tests.tests;
-using Cel.Tests.tests.clr;
+using Cel.Tests;
+using Cel.Tests.Clr;
 using Google.Protobuf.Reflection;
 using NUnit.Framework;
 
-namespace Cel.Tests;
+namespace Cel.Tests.Clr;
 
 [TestFixture]
 public class ClrObjectTests
@@ -62,9 +62,11 @@ public class ClrObjectTests
         return StringTestCases.TestCases()
             .Union(Int32TestCases.TestCases())
             .Union(DecimalTestCases.TestCases())
+            .Union(SingleTestCases.TestCases())
             .Union(SignedIntegerArithmeticTestCases.TestCases())
             .Union(UnsignedIntegerArithmeticTestCases.TestCases())
             .Union(IntegerEdgeCaseTestCases.TestCases())
+            .Union(TimestampConversionTestCases.TestCases())
             .ToList();
     }
 

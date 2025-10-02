@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Cel.Tests.Clr;
 
-namespace Cel.Tests.tests.clr
+namespace Cel.Tests.Clr
 {
     public class UnsignedIntegerArithmeticTestCases
     {

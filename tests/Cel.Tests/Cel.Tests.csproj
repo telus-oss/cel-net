@@ -23,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="tests\simple\testdata\**.*" />
-        <EmbeddedResource Include="tests\simple\testdata\binary\*.binpb" />
+        <None Remove="Tests\Simple\TestData\**.*" />
+        <EmbeddedResource Include="Tests\Simple\TestData\Binary\*.binpb" />
     </ItemGroup>
 
     <ItemGroup>

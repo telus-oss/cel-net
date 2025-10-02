@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cel.Tests.Clr;
 
-namespace Cel.Tests.tests.clr
+namespace Cel.Tests.Clr
 {
     public static class DecimalTestCases
     {

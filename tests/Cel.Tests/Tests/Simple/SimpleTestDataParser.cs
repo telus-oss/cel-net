@@ -68,7 +68,7 @@ public class SimpleTestDataParser
         var assembly = Assembly.GetExecutingAssembly();
         var resourceNames = assembly.GetManifestResourceNames();
 
-        var simpleTestResourceNames = resourceNames.Where(c => c.StartsWith("Cel.Tests.tests.simple.testdata.binary.", StringComparison.Ordinal)
+        var simpleTestResourceNames = resourceNames.Where(c => c.StartsWith("Cel.Tests.Tests.Simple.TestData.Binary.", StringComparison.Ordinal)
                                                                && c.EndsWith(".binpb", StringComparison.Ordinal));
 
         return simpleTestResourceNames.ToArray();
